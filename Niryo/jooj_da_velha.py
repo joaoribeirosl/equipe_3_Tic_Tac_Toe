@@ -8,10 +8,6 @@ robot.tool.update_tool()
 robot.tool.release_with_tool()
 
 posicao_para_andar = robot.arm.move_joints([-1.603, -0.156, -0.834,-0.012, -0.157, -0.140]) #Posição anterior e posterior de pegar
-# vai_pegar = robot.arm.move_joints([-1.524, -0.516, -0.668,-0.008, -0.134, -0.191]) #Posição pra pegar
-# # robot.tool.grasp_with_tool()
-# posicao_para_andar = robot.arm.move_joints([-1.603, -0.156, -0.834,-0.012, -0.157, -0.140]) #Posição anterior e posterior de pegar
-
 
 def draw_board_with_numbers():
     print(' 7 | 8 | 9 ')
@@ -82,13 +78,13 @@ def game_loop():
         draw_board(board)
         try:
             if players[current_player] == 'O':
-                # robot.arm.move_joints([-1.603, -0.156, -0.834,-0.012, -0.157, -0.140]) #Posição anterior e posterior de pegar
                 robot.arm.move_joints([-1.524, -0.516, -0.668,-0.008, -0.134, -0.191]) #Posição pra pegar
                 robot.tool.grasp_with_tool()   
                 move = random.choice(list(positions_dict.keys())) 
                 print(f'Vez do robô e ele vai jogar na posição {move}')
-                robot.arm.move_joints([-1.603, -0.156, -0.834,-0.012, -0.157, -0.140]) #Posição anterior e posterior de pegar     
+                robot.arm.move_joints([-1.603, -0.156, -0.834,-0.012, -0.157, -0.140]) #Posição anterior e posterior de pegar    
                 positions_dict[move]
+                # urgent_move(move) 
                 robot.tool.release_with_tool() 
                 robot.arm.move_joints([-1.603, -0.156, -0.834,-0.012, -0.157, -0.140]) #Posição anterior e posterior de pegar  
                 del positions_dict[move]
@@ -124,14 +120,14 @@ def game_loop():
 game_loop()
 robot.end()
 
-        ##CUIDADO, NÃO MEXER, FRÁGIL
-        # if move == 1: robot.arm.move_joints([ 0.150, -0.953, 0.224,-0.147, -0.762, -0.028])
-        # if move == 2: robot.arm.move_joints([ 0.000, -0.952, 0.206, -0.147, -0.762, -0.033])
-        # if move == 3: robot.arm.move_joints([ -0.157, -0.980, 0.248, -0.147, -0.762, -0.038])
-        # if move == 4: robot.arm.move_joints([ 0.173, -0.775, -0.155, -0.101, -0.598, 0.131])
-        # if move == 5: robot.arm.move_joints([ -0.018, -0.788, -0.148, -0.147, -0.592, -0.120])
-        # if move == 6: robot.arm.move_joints([ -0.177, -0.784, -0.145, -0.147, -0.592, -0.130])
-        # if move == 7: robot.arm.move_joints([ 0.188, -0.567, -0.521, -0.034, -0.413,  0.049])
-        # if move == 8: robot.arm.move_joints([-0.031, -0.579, -0.497, -0.008, -0.503, -0.268])
-        # if move == 9: robot.arm.move_joints([-0.264, -0.572, -0.449, -0.008, -0.511, -0.426])
+def urgent_move(move):
+    if move == 1: robot.arm.move_joints([ 0.150, -0.953, 0.224,-0.147, -0.762, -0.028])
+    if move == 2: robot.arm.move_joints([ 0.000, -0.952, 0.206, -0.147, -0.762, -0.033])
+    if move == 3: robot.arm.move_joints([ -0.157, -0.980, 0.248, -0.147, -0.762, -0.038])
+    if move == 4: robot.arm.move_joints([ 0.173, -0.775, -0.155, -0.101, -0.598, 0.131])
+    if move == 5: robot.arm.move_joints([ -0.018, -0.788, -0.148, -0.147, -0.592, -0.120])
+    if move == 6: robot.arm.move_joints([ -0.177, -0.784, -0.145, -0.147, -0.592, -0.130])
+    if move == 7: robot.arm.move_joints([ 0.188, -0.567, -0.521, -0.034, -0.413,  0.049])
+    if move == 8: robot.arm.move_joints([-0.031, -0.579, -0.497, -0.008, -0.503, -0.268])
+    if move == 9: robot.arm.move_joints([-0.264, -0.572, -0.449, -0.008, -0.511, -0.426])
 

@@ -3,27 +3,15 @@ import random
 from pyniryo2 import *
 from niryo_initialize import robot
 
-
-posicao_para_andar = robot.arm.move_joints([-1.577, -0.178, -0.693,-0.018, -0.500, -0.084]) #Posição anterior e posterior de pegar
-vai_pegar = robot.arm.move_joints([-1.569, -0.465, -0.716,-0.147, -0.058, -0.038]) #Posição pra pegar
-
 robot.arm.calibrate_auto()
 robot.tool.update_tool() 
 robot.tool.release_with_tool()
 
-A1 = robot.arm.move_joints([ 0.150, -0.953, 0.224,-0.147, -0.762, -0.028])
-A2 = robot.arm.move_joints([ 0.000, -0.952, 0.206, -0.147, -0.762, -0.033])
-A3 = robot.arm.move_joints([ -0.157, -0.980, 0.248, -0.147, -0.762, -0.038])
+posicao_para_andar = robot.arm.move_joints([-1.603, -0.156, -0.834,-0.012, -0.157, -0.140]) #Posição anterior e posterior de pegar
+# vai_pegar = robot.arm.move_joints([-1.524, -0.516, -0.668,-0.008, -0.134, -0.191]) #Posição pra pegar
+# # robot.tool.grasp_with_tool()
+# posicao_para_andar = robot.arm.move_joints([-1.603, -0.156, -0.834,-0.012, -0.157, -0.140]) #Posição anterior e posterior de pegar
 
-#B
-B1 = robot.arm.move_joints([ 0.173, -0.775, -0.155, -0.101, -0.598, 0.131])
-B2 = robot.arm.move_joints([ -0.018, -0.788, -0.148, -0.147, -0.592, -0.120])
-B3 = robot.arm.move_joints([ -0.177, -0.784, -0.145, -0.147, -0.592, -0.130])
-
-#C
-C1 = robot.arm.move_joints([ 0.188, -0.567, -0.521, -0.034, -0.413,  0.049])
-C2 = robot.arm.move_joints([-0.031, -0.579, -0.497, -0.008, -0.503, -0.268])
-C3 = robot.arm.move_joints([-0.264, -0.572, -0.449, -0.008, -0.511, -0.426])
 
 def draw_board_with_numbers():
     print(' 7 | 8 | 9 ')
@@ -76,32 +64,35 @@ def game_loop():
     }
 
     positions_dict = {
-        1: A1,
-        2: A2,
-        3: A3,
-        4: B1,
-        5: B2,
-        6: B3,
-        7: C1,
-        8: C2,
-        9: C3,
+        1: robot.arm.move_joints([ 0.150, -0.953, 0.224,-0.147, -0.762, -0.028]),
+        2: robot.arm.move_joints([ 0.000, -0.952, 0.206, -0.147, -0.762, -0.033]),
+        3: robot.arm.move_joints([ -0.157, -0.980, 0.248, -0.147, -0.762, -0.038]),
+
+        4: robot.arm.move_joints([ 0.173, -0.775, -0.155, -0.101, -0.598, 0.131]),
+        5: robot.arm.move_joints([ -0.018, -0.788, -0.148, -0.147, -0.592, -0.120]),
+        6: robot.arm.move_joints([ -0.177, -0.784, -0.145, -0.147, -0.592, -0.130]),
+
+        7: robot.arm.move_joints([ 0.188, -0.567, -0.521, -0.034, -0.413,  0.049]),
+        8: robot.arm.move_joints([-0.031, -0.579, -0.497, -0.008, -0.503, -0.268]),
+        9: robot.arm.move_joints([-0.264, -0.572, -0.449, -0.008, -0.511, -0.426]),
     }
     
       
     while playing:
         draw_board(board)
         try:
-            if players[current_player] == 'Robô Niryo':
-                robot.arm.move_joints([-1.577, -0.178, -0.693,-0.018, -0.500, -0.084]) #Posição anterior e posterior de pegar
-                robot.arm.move_joints([-1.569, -0.465, -0.716,-0.147, -0.058, -0.038]) #Posição pra pegar 
+            if players[current_player] == 'O':
+                # robot.arm.move_joints([-1.603, -0.156, -0.834,-0.012, -0.157, -0.140]) #Posição anterior e posterior de pegar
+                robot.arm.move_joints([-1.524, -0.516, -0.668,-0.008, -0.134, -0.191]) #Posição pra pegar
                 robot.tool.grasp_with_tool()   
-                move = random(1,9)   
+                move = random.choice(list(positions_dict.keys())) 
                 print(f'Vez do robô e ele vai jogar na posição {move}')
-                robot.arm.move_joints([-1.577, -0.178, -0.693,-0.018, -0.500, -0.084]) #Posição anterior e posterior de pegar     
+                robot.arm.move_joints([-1.603, -0.156, -0.834,-0.012, -0.157, -0.140]) #Posição anterior e posterior de pegar     
                 positions_dict[move]
                 robot.tool.release_with_tool() 
+                robot.arm.move_joints([-1.603, -0.156, -0.834,-0.012, -0.157, -0.140]) #Posição anterior e posterior de pegar  
                 del positions_dict[move]
-            if players['X']:
+            if players[current_player] == 'X':
                 move = int(input(f'\n{players[current_player]}, escolha onde você vai jogar (1-9): \n\n'))
                 del positions_dict[move]
                 if move not in positions_human:
@@ -132,3 +123,15 @@ def game_loop():
 
 game_loop()
 robot.end()
+
+        ##CUIDADO, NÃO MEXER, FRÁGIL
+        # if move == 1: robot.arm.move_joints([ 0.150, -0.953, 0.224,-0.147, -0.762, -0.028])
+        # if move == 2: robot.arm.move_joints([ 0.000, -0.952, 0.206, -0.147, -0.762, -0.033])
+        # if move == 3: robot.arm.move_joints([ -0.157, -0.980, 0.248, -0.147, -0.762, -0.038])
+        # if move == 4: robot.arm.move_joints([ 0.173, -0.775, -0.155, -0.101, -0.598, 0.131])
+        # if move == 5: robot.arm.move_joints([ -0.018, -0.788, -0.148, -0.147, -0.592, -0.120])
+        # if move == 6: robot.arm.move_joints([ -0.177, -0.784, -0.145, -0.147, -0.592, -0.130])
+        # if move == 7: robot.arm.move_joints([ 0.188, -0.567, -0.521, -0.034, -0.413,  0.049])
+        # if move == 8: robot.arm.move_joints([-0.031, -0.579, -0.497, -0.008, -0.503, -0.268])
+        # if move == 9: robot.arm.move_joints([-0.264, -0.572, -0.449, -0.008, -0.511, -0.426])
+
